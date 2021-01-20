@@ -32,7 +32,8 @@ function resize() {
     console.log('height')
 }
 export default function index() {
-    const router = useRouter()
+    const dispatch = useDispatch()
+
     const sortBy = useSelector(channelList.channelListSortBySelector)
     const resolution = useSelector(channelList.channelListResolutionSelector)
     const language = useSelector(channelList.channelListLanguageSelector)
@@ -47,7 +48,7 @@ export default function index() {
         500
     );
 
-    const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(channelList.channelListRequestAction())
 
@@ -75,9 +76,6 @@ export default function index() {
 
 
 
-    const handleChannelClick = (url) => {
-        router.push(url)
-    }
 
 
     const classes = useStyles();
@@ -175,6 +173,12 @@ export default function index() {
 
 const ChannelList = ({ list }) => {
 
+    const router = useRouter()
+
+    const handleChannelClick = (url) => {
+        router.push(url)
+    }
+
     return (
         <>
             {
@@ -191,7 +195,7 @@ const ChannelList = ({ list }) => {
                                         <Grid item xs={8} >
 
                                             <Typography>
-                                                {channel.stbNumber != '99999' ? `CH ${channel.stbNumber}` : 'Astro GO Exclusive Channels'}
+                                                {channel.stbNumber != '99999' ? `CH${channel.stbNumber}` : 'Astro GO Exclusive Channels'}
                                             </Typography>
                                             <Typography >{channel.title}</Typography>
                                         </Grid>

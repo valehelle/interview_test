@@ -165,7 +165,7 @@ export default function index() {
 
                         return (
                             <TabPanel as="div" key={index} value={tabIndex} index={index}>
-                                {channel.schedule.map(((sche, index) => <Box key={index}>{getHour(sche.datetime)} {sche.title}  </Box>))}
+                                {channel.schedule.map(((sche, index) => <Box key={index}>{isToday(channel.date) && index == 0 ? 'On Now' : getHour(sche.datetime)} {sche.title}  </Box>))}
                             </TabPanel>
                         )
                     })}

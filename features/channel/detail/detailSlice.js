@@ -19,7 +19,7 @@ export const channelDetailScheduleSelector = createSelector(
                 const newSchedule = schedule[key].filter(sch => {
                     const todayDate = new Date()
                     const showDate = new Date(sch.datetime)
-                    return todayDate.getTime() - showDate.getTime() > 0 ? false : true
+                    return todayDate.getTime() - showDate.getTime() > 1500000 ? false : true
                 })
                 return ({ 'date': key, 'schedule': newSchedule })
             }

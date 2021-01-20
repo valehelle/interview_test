@@ -6,38 +6,22 @@ import { channelListMock, resultListMock, resultListMockOrderedByName, resultLis
 
 
 describe('channel reducer', () => {
-    it('it should store the response and detailsUrl', () => {
-        expect(list.reducer(undefined, { type: success(channelListRequest.channelListRequestAction), payload: { data: channelListMock } })).toEqual(
-            {
+    it('channelListSelector selector should be searchable by name', () => {
+        const mockReducer = {
+            channelList: {
                 sortBy: 'name',
                 resolution: [],
+                search: 'TV1',
                 languages: [],
                 categories: [],
-                search: '',
                 resultList: channelListMock.response,
-                channelUrls: Object.fromEntries(
-                    channelListMock.response.map(channel => [channel.id, channel.detailUrl])
-                ),
                 response: channelListMock.response
-            }
-        )
-    }),
-        it('channelListSelector selector should be searchable by name', () => {
-            const mockReducer = {
-                channelList: {
-                    sortBy: 'name',
-                    resolution: [],
-                    search: 'TV1',
-                    languages: [],
-                    categories: [],
-                    resultList: channelListMock.response,
-                    response: channelListMock.response
-                },
-            };
-            const resultList = list.channelListSelector(mockReducer)
+            },
+        };
+        const resultList = list.channelListSelector(mockReducer)
 
-            expect(resultList).toEqual(resultListMock)
-        })
+        expect(resultList).toEqual(resultListMock)
+    })
     it('channelListSelector selector should be sorted by name', () => {
         const mockReducer = {
             channelList: {

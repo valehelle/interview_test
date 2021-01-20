@@ -2,19 +2,32 @@ import { createSlice, createSelector } from '@reduxjs/toolkit'
 import * as channelListRequest from './channelListRequest'
 import { success } from 'redux-saga-requests';
 
+export const channelListSearchSelector = state => state.channelList.search
+export const channelListSortBySelector = state => state.channelList.sortBy
+export const channelListResolutionSelector = state => state.channelList.resolution
+export const channelListLanguageSelector = state => state.channelList.languages
+export const channelListCategorySelector = state => state.channelList.categories
+
+
+
 export const channelListSelector = createSelector(
-    [state => state.channelList.resultList,
-    state => state.channelList.search.toUpperCase(),
-    state => state.channelList.languages,
-    state => state.channelList.categories,
-    state => state.channelList.resolution,
-    state => state.channelList.sortBy],
+    [
+        state => state.channelList.resultList,
+        channelListSearchSelector,
+        channelListLanguageSelector,
+        channelListCategorySelector,
+        channelListResolutionSelector,
+        channelListSortBySelector
+    ],
     (resultList, search, languages, categories, resolution, sortBy) => resultList.filter(channel => {
+
         if (search != '') {
+            const query = search.toUpperCase()
             const title = channel.title.toUpperCase()
             const stbNumber = channel.stbNumber.toUpperCase()
-            return title.includes(search) || stbNumber.includes(search)
+            return title.includes(query) || stbNumber.includes(query)
         }
+
 
         return true
 
@@ -58,21 +71,6 @@ export const channelListSelector = createSelector(
 )
 
 
-
-
-export const channelListSearchSelector = createSelector(
-    state => state.channelList,
-    channelList => channelList.search,
-)
-export const channelListSortBySelector = createSelector(
-    state => state.channelList,
-    channelList => channelList.sortBy,
-)
-export const channelListResolutionSelector = createSelector(
-    state => state.channelList,
-    channelList => channelList.resolution,
-)
-
 const initialState = {
     sortBy: 'number',
     search: '',
@@ -99,20 +97,29 @@ const listSlice = createSlice({
             const resolution = action.payload
             state.resolution = resolution
         },
+        changeLanguage(state, action) {
+            const languages = action.payload
+            state.languages = languages
+        },
+        changeCategory(state, action) {
+            const categories = action.payload
+            state.categories = categories
+        },
     },
     extraReducers: {
         [success(channelListRequest.channelListRequestAction.type)]: (state, action) => {
 
             const response = action.payload.data.response
+            const massageResponse = response.map(channel => channel.stbNumber == '0' ? { ...channel, stbNumber: '99999' } : channel)
             const urls = Object.fromEntries(response.map(channel => [channel.id, channel.detailUrl]))
             state.channelUrls = urls
-            state.response = response
-            state.resultList = response
+            state.response = massageResponse
+            state.resultList = massageResponse
         }
     }
 })
 
-const { changeSearchInput, changeSortBy, changeResolution } = listSlice.actions
+const { changeSearchInput, changeSortBy, changeResolution, changeLanguage, changeCategory } = listSlice.actions
 const reducer = listSlice.reducer
 
-export { reducer, changeSearchInput, changeSortBy, changeResolution }
+export { reducer, changeSearchInput, changeSortBy, changeResolution, changeLanguage, changeCategory }

@@ -9,7 +9,7 @@ import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
+import { isToday } from '../../commons/lib'
 import { channelDetail } from '../../features/channel'
 
 
@@ -48,13 +48,7 @@ const TabPanel = (props) => {
     );
 }
 
-const isToday = (date) => {
-    const someDate = new Date(date)
-    const today = new Date()
-    return someDate.getDate() == today.getDate() &&
-        someDate.getMonth() == today.getMonth() &&
-        someDate.getFullYear() == today.getFullYear()
-}
+
 
 
 

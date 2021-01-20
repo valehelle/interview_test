@@ -1,15 +1,7 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit'
 import * as channelDetailRequest from './channelDetailRequest'
 import { success } from 'redux-saga-requests';
-
-
-const isToday = (date) => {
-    const someDate = new Date(date)
-    const today = new Date()
-    return someDate.getDate() == today.getDate() &&
-        someDate.getMonth() == today.getMonth() &&
-        someDate.getFullYear() == today.getFullYear()
-}
+import { isToday } from '../../../commons/lib'
 
 
 export const channelDetailSelector = state => state.channelDetail.details
